@@ -69,8 +69,8 @@ l.reduceAccum(l.add(_,_), 69, ~scale);
 	selected.postln;
 	playing = selected.play(fadeTime:2);
 	playing.postln;
-	~active_synths.add(playing);
 	~active_synths.size.postln;
+	playing;
 };
 
 
@@ -97,6 +97,7 @@ l.reduceAccum(l.add(_,_), 69, ~scale);
 
 ~automatic_playing = {
 	|time|
+	var playing;
 	if(~continue == true,
 		{
 			SystemClock.sched(rrand(4,10), {
@@ -107,8 +108,9 @@ l.reduceAccum(l.add(_,_), 69, ~scale);
 
 			});
 			SystemClock.sched(time, {
-				~play_synth.(~synths);
+			playing = 	~play_synth.(~synths);
 				~automatic_playing.(rrand(4,10));
+				SystemClock.sched(1, {~active_synths.add(playing)});//evita que el nodo se agregue a la list antes de que se active en el servidor, y previene un bug donde la función de stop_synth podía intentar apagar un sinte que todavía no existe como nodo.
 			});
 		},
 		{
