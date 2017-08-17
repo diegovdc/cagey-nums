@@ -48,8 +48,8 @@ l.reduceAccum(l.add(_,_), 69, ~scale);
 ~midistofreqs = _.collect(_.midicps);
 
 ~freq_scale = l.concat([
-	~midistofreqs.(~get_lower_octave_notes.(86, 3, ~scale)),
-	~midistofreqs.(~get_upper_octave_notes.(74, 3, ~scale))
+	~midistofreqs.(~get_lower_octave_notes.(74, 1, ~scale)),
+	~midistofreqs.(~get_upper_octave_notes.(74, 1, ~scale))
 ]);
 
 ~make_synth = {
@@ -119,8 +119,8 @@ l.reduceAccum(l.add(_,_), 69, ~scale);
 		}
 	)
 };
-
-
+s.free(1018)
+~active_synths = List[];
 ~automatic_playing.(4);
 ~play_synth.(~synths);
 ~stop_synth.(~active_synths)
@@ -130,3 +130,5 @@ l.reduceAccum(l.add(_,_), 69, ~scale);
 
 a = Scale.phrygian.degreeToFreq(2, 60.midicps, 1);
 b = Scale.phrygian.tuning_(\just).degreeToFreq(2, 60.midicps, 1);
+s.sendMsg(\n_free, 1118)
+n = s.nextNodeID;
