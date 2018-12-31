@@ -12,9 +12,9 @@ CageyNums {
 		var synths = CageyNums.makeSynths(CageyNums.buildFreqs(scale, root, octaves));
 		this.synths = synths;
 		this.scaleNotes = scale
-		.degrees
-		.collect(scale.degreeToFreq(_, root, 1))
-		.cpsname
+		.degrees.size
+		.collect(scale.degreeToFreq(_, root.midicps, 2))
+		.cpsname.postln
 		.collect({|note| note.findRegexp("[A-Z|b|#]*")[0][1]});
 		this.activeSynths = List [];
 	}
