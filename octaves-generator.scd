@@ -8,8 +8,8 @@ Tuning.directory // muestra opciones de afinación
 a = CageyNums(
 	scale: Scale.major, // la afinación \just es opcional, si la quitas te da ET12
 	// ET12 = temperamento igual :D
-	root: 61, // nota midi, puedes usar "C4".namemidi en lugar de 60
-	octaves: (-1..1) // generar octavas arriba y abajo de root i.e de C3 - B5
+	root: 60, // nota midi, puedes usar "C4".namemidi en lugar de 60
+	octaves: (-1..2) // generar octavas arriba y abajo de root i.e de C3 - B5
 );
 )
 
