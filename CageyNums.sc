@@ -3,6 +3,9 @@ CageyNums {
 	var <> synths;
 	var <> scaleNotes;
 	var <> continue = true;
+	var <> minWait = 4;
+	var <> maxWait = 50;
+	var <> amp = 1;
 
 	*new {|scale, root, octaves|
 		 ^super.new.init(scale, root, octaves)
@@ -22,17 +25,15 @@ CageyNums {
 	*buildFreqs {|scale, root, octaves|
 		var degrees = (0..scale.degrees.size -1);
 		^octaves.collect({|octave|
-			degrees.collect({|degree|
-				scale.degreeToFreq(degrees, root.midicps, octave)
-			})
-		}).flatten.flatten
+			scale.degreeToFreq(degrees, root.midicps, octave)
+		}).flatten.postln
 	}
 
 	*makeSynths {|freqs|
 		^freqs.collect({|freq|
 			{
-				("Playing: "+freq.cpsname).postln;
-				SinOsc.ar([freq, freq*2], 0, [0.25, 0.18])
+				("Playing: "+freq.cpsname+ freq.cpsmidi).postln;
+				SinOsc.ar([freq, freq*2, freq*3, freq*4],0, [0.25, 0.18, 0.1, 0.1]);
 			}
 		})
 	}
@@ -72,7 +73,7 @@ CageyNums {
 		var playing;
 		if(this.continue == true,
 			{
-				SystemClock.sched(rrand(4,10), {
+				SystemClock.sched(rrand(this.minWait, this.maxWait), {
 					if(this.activeSynths.size > 1, {
 						this.stopSynth(this.activeSynths);
 					}, {})
@@ -80,7 +81,7 @@ CageyNums {
 				});
 				SystemClock.sched(time, {
 					playing = this.playSynth(this.synths);
-					this.automaticPlaying(rrand(4,10));
+					this.automaticPlaying(rrand(this.minWait, this.maxWait));
 					SystemClock.sched(1, {this.activeSynths.add(playing)});//evita que el nodo se agregue a la list antes de que se active en el servidor, y previene un bug donde la función de stop_synth podía intentar apagar un sinte que todavía no existe como nodo.
 				});
 			},
